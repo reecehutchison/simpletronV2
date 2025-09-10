@@ -1,4 +1,4 @@
-package reecehutchison;
+package simpletron;
 
 public class Main {
     public static void main(String[] args) {
