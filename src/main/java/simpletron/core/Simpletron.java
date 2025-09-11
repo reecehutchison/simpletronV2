@@ -9,53 +9,58 @@ public class Simpletron {
 
     public int[] memory = new int[MEMORY_SIZE];
 
-    int accumulatorRegister = 0;
-    int instructionCounterRegister = 0;
-    int instructionRegister = 0;
-    int indexRegister = 0;
+    public int accumulatorRegister = 0;
+    public int instructionCounterRegister = 0;
+    public int instructionRegister = 0;
+    public int indexRegister = 0;
 
     public Simpletron() {
 
     }
 
     public void coreDump(int lowPageRange, int highPageRange) {
-
         this.validatePageRanges(lowPageRange, highPageRange);
 
         for (int currentPage = lowPageRange; currentPage <= highPageRange; currentPage++) {
             this.printPageNumber(currentPage);
             this.printRegisters();
-            // get op code and print
-            // get operand and print
+            System.out.println();
             this.printPageMemory(currentPage);
+            System.out.println();
         }
     }
 
     private void printPageMemory(int pageNumber) {
-        System.out.println("MEMORY\n");
-        System.out.println("       0      1      2      3      4      5      6      7      8      9");
-
+        printMemoryHeader();
         int currentPageLocation = pageNumber * PAGE_SIZE;
 
         for (int row = 0; row < 10; row++) {
             System.out.print(row + " ");
 
-            for (int memoryIndex = currentPageLocation; memoryIndex < currentPageLocation + 10; memoryIndex++) {
-                printIntegerWithCorrectAmountOfDigits(this.memory[memoryIndex]);
-                System.out.print(" ");
-            }
+            printMemoryRow(currentPageLocation);
 
             currentPageLocation += 10;
             System.out.println();
         }
-
     }
 
-    private void printIntegerWithCorrectAmountOfDigits(int number) {
+    void printMemoryRow(int currentPageLocation) {
+        for (int memoryIndex = currentPageLocation; memoryIndex < currentPageLocation + 10; memoryIndex++) {
+            printIntegerWithCorrectAmountOfDigits(this.memory[memoryIndex], 6);
+            System.out.print(" ");
+        }
+    }
+
+    private void printMemoryHeader() {
+        System.out.println("MEMORY\n");
+        System.out.println("       0      1      2      3      4      5      6      7      8      9");
+    }
+
+    private void printIntegerWithCorrectAmountOfDigits(int number, int amountOfDigits) {
         String stringNumber = String.valueOf(number);
         StringBuilder correctNumber = new StringBuilder(stringNumber);
 
-        while (correctNumber.length() < 6) {
+        while (correctNumber.length() < amountOfDigits) {
             correctNumber.insert(0, 0);
         }
 
@@ -82,8 +87,26 @@ public class Simpletron {
 
     private void printRegisters() {
         System.out.println("REGISTERS:\n");
-        System.out.println("accumulator           " + this.accumulatorRegister);
-        System.out.println("InstructionCounter    " + this.instructionCounterRegister);
-        System.out.println("IndexRegister         " + this.indexRegister);
+
+        System.out.print("accumulator           ");
+        this.printIntegerWithCorrectAmountOfDigits(this.accumulatorRegister, 6);
+        System.out.println();
+
+        System.out.print("InstructionCounter    ");
+        this.printIntegerWithCorrectAmountOfDigits(this.instructionCounterRegister, 6);
+        System.out.println();
+
+
+        System.out.print("IndexRegister         ");
+        this.printIntegerWithCorrectAmountOfDigits(this.indexRegister, 6);
+        System.out.println();
+
+        System.out.print("operationCode             ");
+        this.printIntegerWithCorrectAmountOfDigits(this.instructionRegister / 10000, 2);
+        System.out.println();
+
+        System.out.print("operand                 ");
+        this.printIntegerWithCorrectAmountOfDigits(this.instructionRegister % 10000, 4);
+        System.out.println();
     }
 }

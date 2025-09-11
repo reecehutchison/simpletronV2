@@ -9,12 +9,14 @@ public class Main {
         simpletronV2.memory[0] = 1;
         simpletronV2.memory[1] = 2;
         simpletronV2.memory[2] = 3;
-        simpletronV2.memory[9999] = 1;
+        simpletronV2.memory[99] = 9;
 
+        simpletronV2.accumulatorRegister = 0;
+        simpletronV2.indexRegister = 223;
+        simpletronV2.instructionCounterRegister = 123456;
+        simpletronV2.instructionRegister = 123456;
 
-        simpletronV2.coreDump(99, 99);
-
-
+        simpletronV2.coreDump(0, 1);
     }
 }
 
