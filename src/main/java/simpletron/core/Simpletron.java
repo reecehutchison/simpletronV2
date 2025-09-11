@@ -33,19 +33,22 @@ public class Simpletron {
     private void printPageMemory(int pageNumber) {
         printMemoryHeader();
         int currentPageLocation = pageNumber * PAGE_SIZE;
+        final int ROW_SIZE = 10;
 
         for (int row = 0; row < 10; row++) {
-            System.out.print(row + " ");
+            System.out.print(row + "  ");
 
             printMemoryRow(currentPageLocation);
 
-            currentPageLocation += 10;
+            currentPageLocation += ROW_SIZE;
             System.out.println();
         }
     }
 
     void printMemoryRow(int currentPageLocation) {
-        for (int memoryIndex = currentPageLocation; memoryIndex < currentPageLocation + 10; memoryIndex++) {
+        final int ROW_SIZE = 10;
+
+        for (int memoryIndex = currentPageLocation; memoryIndex < currentPageLocation + ROW_SIZE; memoryIndex++) {
             printIntegerWithCorrectAmountOfDigits(this.memory[memoryIndex], 6);
             System.out.print(" ");
         }
@@ -53,15 +56,25 @@ public class Simpletron {
 
     private void printMemoryHeader() {
         System.out.println("MEMORY\n");
-        System.out.println("       0      1      2      3      4      5      6      7      8      9");
+        System.out.println("         0       1       2       3       4       5       6       7       8       9");
     }
 
     private void printIntegerWithCorrectAmountOfDigits(int number, int amountOfDigits) {
         String stringNumber = String.valueOf(number);
         StringBuilder correctNumber = new StringBuilder(stringNumber);
 
+        if (number < 0) {
+            correctNumber.delete(0, 1);
+        }
+
         while (correctNumber.length() < amountOfDigits) {
             correctNumber.insert(0, 0);
+        }
+
+        if (number >= 0) {
+            correctNumber.insert(0, "+");
+        } else {
+            correctNumber.insert(0, "-");
         }
 
         System.out.print(correctNumber.toString());
