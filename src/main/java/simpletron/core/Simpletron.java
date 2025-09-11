@@ -25,12 +25,10 @@ public class Simpletron {
         for (int currentPage = lowPageRange; currentPage <= highPageRange; currentPage++) {
             this.printPageNumber(currentPage);
             this.printRegisters();
+            // get op code and print
+            // get operand and print
             this.printPageMemory(currentPage);
         }
-
-
-        // get op code and print
-        // get operand and print
     }
 
     private void printPageMemory(int pageNumber) {
@@ -39,15 +37,15 @@ public class Simpletron {
 
         int currentPageLocation = pageNumber * PAGE_SIZE;
 
-        for (int row = 0; row <= 9; row++) {
+        for (int row = 0; row < 10; row++) {
             System.out.print(row + " ");
 
-            for (int memoryIndex = currentPageLocation; memoryIndex <= currentPageLocation + 9; memoryIndex++) {
+            for (int memoryIndex = currentPageLocation; memoryIndex < currentPageLocation + 10; memoryIndex++) {
                 printIntegerWithCorrectAmountOfDigits(this.memory[memoryIndex]);
                 System.out.print(" ");
             }
 
-            currentPageLocation += 9;
+            currentPageLocation += 10;
             System.out.println();
         }
 

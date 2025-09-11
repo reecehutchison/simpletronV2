@@ -9,10 +9,10 @@ public class Main {
         simpletronV2.memory[0] = 1;
         simpletronV2.memory[1] = 2;
         simpletronV2.memory[2] = 3;
-        simpletronV2.memory[100] = 100;
+        simpletronV2.memory[9999] = 1;
 
 
-        simpletronV2.coreDump(0, 0);
+        simpletronV2.coreDump(99, 99);
 
 
     }
