@@ -9,9 +9,6 @@ import java.rmi.registry.LocateRegistry;
 import java.util.List;
 
 public class Main {
-
-
-
     public static void main(String[] args) {
         Simpletron simpletronV2 = new Simpletron();
         BootService bs = new BootService();
@@ -19,12 +16,8 @@ public class Main {
         List<Integer> instructions = bs.boot();
 
         simpletronV2.loadInstructionsIntoMemory(instructions);
+        simpletronV2.runProgram();
 
-        simpletronV2.coreDump(0,0);
-
-        // simpletron run program (will execute instruction cycles, fetch -> decode -> execute)
-        // terminate simulation gracefully
-        // write program in simpletron machine language
-
+        System.out.println("\nThank you for using the SimpletronV2");
     }
 }

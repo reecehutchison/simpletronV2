@@ -6,6 +6,7 @@ package simpletron.core;
 // TODO: remember to follow the von nueman architecture, fetch -> decode -> execute (cycle)
 // TODO: program run: will loop of instruction cycles (doing the fetch, decode, execute)
 // todo: go through each class and click . and make sure nothing is public that should not be!
+// TODO: load a halt in at the end of loading into program...
 
 import simpletron.services.ScannerService;
 
@@ -13,6 +14,48 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Simpletron {
+    private enum OperationCodes {
+        UNUSED_0, UNUSED_1, UNUSED_2, UNUSED_3, UNUSED_4,
+        UNUSED_5, UNUSED_6, UNUSED_7, UNUSED_8, UNUSED_9,
+
+        READ,
+        WRITE,
+
+        UNUSED_12, UNUSED_13, UNUSED_14, UNUSED_15,
+        UNUSED_16, UNUSED_17, UNUSED_18, UNUSED_19,
+
+        LOAD,
+        LOADIM,
+        LOADX,
+        LOADIDX,
+
+        UNUSED_24,
+
+        STORE,
+        STOREIDX,
+
+        UNUSED_27, UNUSED_28, UNUSED_29,
+
+        ADD,
+        ADDX,
+        SUBTRACT,
+        SUBTRACTX,
+        DIVIDE,
+        DIVIDEX,
+        MULTIPLY,
+        MULTIPLYX,
+        INC,
+        DEC,
+        BRANCH,
+        BRANCHNEG,
+        BRANCHZERO,
+        SWAP,
+
+        UNUSED_44,
+
+        HALT
+    }
+
     final int MEMORY_SIZE = 10000;
     final int PAGE_SIZE = 100;
     final int WORD_SIZE = 6; // 6 digits (word size)
@@ -27,7 +70,144 @@ public class Simpletron {
 
     public Simpletron() {}
 
-    // TODO: executeInstructions()
+
+    public void runProgram() {
+
+        // each iteration represents one instruction cycle of the Von Neumann architecture
+        while (instructionCounterRegister < MEMORY_SIZE) {
+
+            // fetch
+            int currentInstruction = fetchInstruction();
+
+            // decode
+            int operationCode = decodeOperationCode(currentInstruction);
+            int operand = decodeOperand(currentInstruction);
+
+            // execute
+            boolean programHasAnotherInstruction = executeInstruction(operationCode, operand);
+
+            if (!programHasAnotherInstruction) {
+                break;
+            }
+
+            this.instructionCounterRegister++;
+        }
+
+        if (this.instructionCounterRegister >= MEMORY_SIZE) {
+            throw new RuntimeException("Simpletron memory overflowed, or instruction counter is out of memory bounds");
+        }
+    }
+
+    private boolean executeInstruction(int operationCode, int operand) {
+        OperationCodes opCode = OperationCodes.values()[operationCode];
+
+        switch (opCode) {
+            case READ:
+                this.read(operand);
+                break;
+
+            case WRITE:
+                this.write(operand);
+                break;
+
+            case LOAD:
+                this.load(operand);
+                break;
+
+            case LOADIM:
+                this.loadIm(operand);
+                break;
+
+            case LOADIDX:
+                this.loadIdx();
+                break;
+
+            case STORE:
+                this.store(operand);
+                break;
+
+            case STOREIDX:
+                this.storeIdx();
+                break;
+
+            case ADD:
+                this.add(operand);
+                break;
+
+            case ADDX:
+                this.addX();
+                break;
+
+            case SUBTRACT:
+                this.subtract(operand);
+                break;
+
+            case SUBTRACTX:
+                this.subtractX();
+                break;
+
+            case DIVIDE:
+                this.divide(operand);
+                break;
+
+            case DIVIDEX:
+                this.divideX();
+                break;
+
+            case MULTIPLY:
+                this.multiply(operand);
+                break;
+
+            case MULTIPLYX:
+                this.multiplyX();
+                break;
+
+            case INC:
+                this.inc();
+                break;
+
+            case DEC:
+                this.dec();
+                break;
+
+            case BRANCH:
+                this.branch(operand);
+                break;
+
+            case BRANCHNEG:
+                this.branchNeg(operand);
+                break;
+
+            case BRANCHZERO:
+                this.branchZero(operand);
+                break;
+
+            case SWAP:
+                this.swap();
+                break;
+
+            case HALT:
+                return false;
+
+            default:
+                throw new RuntimeException("How did we get here?");
+        }
+
+
+        return true;
+    }
+
+    private int decodeOperationCode(int instruction) {
+        return instruction / 10000;
+    }
+
+    private int decodeOperand(int instruction) {
+        return instruction % 10000;
+    }
+
+    private int fetchInstruction() {
+        return this.memory[this.instructionCounterRegister];
+    }
 
     public void loadInstructionsIntoMemory(List<Integer> instructions) {
         if (instructions.size() > 10000) {
@@ -38,15 +218,25 @@ public class Simpletron {
 
         for (int instruction : instructions) {
             if (!this.validateInstruction(instruction)) {
-                throw new RuntimeException("Simpletron instructions are invalid, encountered an instruction with more then 6 digits");
+                throw new RuntimeException("Simpletron instructions are invalid, encountered an instruction with more or less then 6 digits");
             }
 
             this.memory[locationInMemory++] = instruction;
         }
+
+        if (this.memory[locationInMemory - 1] / 10000 != 45) {  // adds in HALT op code in case user forgets
+            this.memory[locationInMemory] = 450000;
+        }
     }
 
     private boolean validateInstruction(int instruction) {
-        return instruction < 1000000 && instruction > -1000000;
+        StringBuilder stringInstruction = new StringBuilder(String.valueOf(instruction));
+
+        if (instruction < 0) {
+            stringInstruction.delete(0, 1);
+        }
+
+        return stringInstruction.length() == 6 || instruction == 0;
     }
 
     // READ
@@ -158,7 +348,7 @@ public class Simpletron {
     }
 
     // MULTIPLYX
-    public void multiplyX(int operand) {
+    public void multiplyX() {
         this.accumulatorRegister *= this.memory[this.indexRegister];
     }
 
@@ -192,7 +382,7 @@ public class Simpletron {
     }
 
     // SWAP
-    public void swap(int operand) {
+    public void swap() {
         int tmp = this.accumulatorRegister;
         this.accumulatorRegister = indexRegister;
         this.indexRegister = tmp;
