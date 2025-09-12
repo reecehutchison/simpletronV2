@@ -48,6 +48,7 @@ public class FileService {
             this.lines = Files.readAllLines(Paths.get("src/main/resources/" + fileName));
         } catch (IOException e) {
             System.out.println("Error reading " + fileName + " : " + e.getMessage());
+            throw new RuntimeException("FILE NOT FOUND");
         }
     }
 }

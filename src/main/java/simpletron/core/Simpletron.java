@@ -114,6 +114,10 @@ public class Simpletron {
                 this.load(operand);
                 break;
 
+            case LOADX:
+                this.loadX(operand);
+                break;
+
             case LOADIM:
                 this.loadIm(operand);
                 break;
@@ -187,6 +191,8 @@ public class Simpletron {
                 break;
 
             case HALT:
+                System.out.println();
+                this.halt(operand);
                 return false;
 
             default:
@@ -223,8 +229,9 @@ public class Simpletron {
 
             this.memory[locationInMemory++] = instruction;
         }
-
-        if (this.memory[locationInMemory - 1] / 10000 != 45) {  // adds in HALT op code in case user forgets
+        if (locationInMemory <= 0) {
+            this.memory[0] = 450000;
+        } else if (this.memory[locationInMemory - 1] / 10000 != 45) {  // adds in HALT op code in case user forgets
             this.memory[locationInMemory] = 450000;
         }
     }
@@ -474,12 +481,12 @@ public class Simpletron {
     }
 
     private void printPageNumber(int pageNumber) {
-        System.out.println("PAGE ## " + pageNumber + "\n");
+        System.out.println("*** PAGE ## " + pageNumber + " ***\n");
     }
 
     // TODO : refactor this into a function that prints each register
     private void printRegisters() {
-        System.out.println("REGISTERS:\n");
+        System.out.println("REGISTERS:");
 
         System.out.print("accumulator           ");
         this.printIntegerWithCorrectAmountOfDigits(this.accumulatorRegister, 6);

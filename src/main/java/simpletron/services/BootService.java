@@ -33,6 +33,7 @@ public class BootService {
                 throw new RuntimeException("Boot type now supported");
         }
 
+        System.out.println(); // add spacing so it's pretttttttttttttty
         return this.instructions;
     }
 
