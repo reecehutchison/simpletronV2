@@ -3,6 +3,9 @@ package simpletron.core;
 // TODO: setters and getters and make class fields private
 // TODO: make sure to enumerate the switch statement
 // TODO: remeber to follow the von nueman architecture, fetch -> decode -> execute (cycle)
+// TODO: program run: will loop of instruction cycles (doing the fetch, decode, execute)
+
+import simpletron.services.ScannerService;
 
 import java.util.Scanner;
 
@@ -19,8 +22,6 @@ public class Simpletron {
     public int instructionRegister = 0;
     public int indexRegister = 0;
 
-    Scanner scanner = new Scanner(System.in);
-
     public Simpletron() {}
 
     // TODO: loadInstructions()
@@ -28,6 +29,7 @@ public class Simpletron {
 
     // READ
     public void read(int operand) {
+        Scanner scanner = ScannerService.getScanner();
         System.out.print("? ");
         int word = scanner.nextInt();
         this.validateRead(word);
