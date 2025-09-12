@@ -8,9 +8,7 @@ public class Main {
         Simpletron simpletronV2 = new Simpletron();
 
 
-
-        simpletronV2.coreDump(0, 0);
-
+        simpletronV2.halt(1234);
 
 
 

@@ -2,6 +2,7 @@ package simpletron.core;
 
 // TODO: setters and getters and make class fields private
 // TODO: make sure to enumerate the switch statement
+// TODO: remeber to follow the von nueman architecture, fetch -> decode -> execute (cycle)
 
 import java.util.Scanner;
 
@@ -76,6 +77,110 @@ public class Simpletron {
             throw new RuntimeException("Read value, operand size, must be less then " + this.OPERAND_SIZE +  " digits");
         }
     }
+
+    // LOADX
+    public void loadX(int operand) {
+        this.indexRegister = this.memory[operand];
+    }
+
+    // LOADIDX
+    public void loadIdx() {
+        this.accumulatorRegister = this.memory[this.indexRegister];
+    }
+
+    // STORE
+    public void store(int operand) {
+        this.memory[operand] = this.accumulatorRegister;
+    }
+
+    // STOREIDX
+    public void storeIdx() {
+        this.memory[this.indexRegister] = this.accumulatorRegister;
+    }
+
+    // ADD
+    public void add(int operand) {
+        this.accumulatorRegister += this.memory[operand];
+    }
+
+    // ADDX
+    public void addX() {
+        this.accumulatorRegister += this.memory[this.indexRegister];
+    }
+
+    // SUBTRACT
+    public void subtract(int operand) {
+        this.accumulatorRegister -= this.memory[operand];
+    }
+
+    // SUBTRACTX
+    public void subtractX() {
+        this.accumulatorRegister -= this.memory[this.indexRegister];
+    }
+
+    // DIVIDE
+    public void divide(int operand) {
+        this.accumulatorRegister /= this.memory[operand];
+    }
+
+    // DIVIDEX
+    public void divideX() {
+        this.accumulatorRegister /= this.memory[this.indexRegister];
+    }
+
+    // MULTIPLY
+    public void multiply(int operand) {
+        this.accumulatorRegister *= this.memory[operand];
+    }
+
+    // MULTIPLYX
+    public void multiplyX(int operand) {
+        this.accumulatorRegister *= this.memory[this.indexRegister];
+    }
+
+    // INC
+    public void inc() {
+        this.indexRegister++;
+    }
+
+    // DEC
+    public void dec() {
+        this.indexRegister--;
+    }
+
+    // BRANCH
+    public void branch(int operand) {
+        this.instructionCounterRegister = operand;
+    }
+
+    // BRANCHNEG
+    public void branchNeg(int operand) {
+        if (this.accumulatorRegister < 0) {
+            this.instructionCounterRegister = operand;
+        }
+    }
+
+    // BRANCHZERO
+    public void branchZero(int operand) {
+        if (this.accumulatorRegister == 0) {
+            this.instructionCounterRegister = operand;
+        }
+    }
+
+    // SWAP
+    public void swap(int operand) {
+        int tmp = this.accumulatorRegister;
+        this.accumulatorRegister = indexRegister;
+        this.indexRegister = tmp;
+    }
+
+    // HALT
+    public void halt(int operand) {
+        int lowRange = operand / 100;
+        int highRange = operand % 100;
+        coreDump(lowRange, highRange);
+    }
+
 
     // TODO : make this private
     public void coreDump(int lowPageRange, int highPageRange) {
