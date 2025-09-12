@@ -1,8 +1,10 @@
 package simpletron;
 
 import simpletron.core.Simpletron;
+import simpletron.services.FileService;
 import simpletron.services.KeyboardService;
 
+import java.rmi.registry.LocateRegistry;
 import java.util.List;
 
 public class Main {
@@ -13,15 +15,12 @@ public class Main {
 
         Simpletron simpletronV2 = new Simpletron();
 
-        KeyboardService kb = new KeyboardService();
+        FileService fs = new FileService();
+        List<Integer> list =  fs.executeService();
 
-        List<Integer> instructions = kb.executeService();
-
-        System.out.println("------");
-        for (int e : instructions) {
+        for (int e : list) {
             System.out.println(e);
         }
-
 
     }
 }

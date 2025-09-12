@@ -25,8 +25,8 @@ public class KeyboardService {
             }
 
             try {
-                int value = Integer.parseInt(input);
-                this.instructions.add(value);
+                int instruction = Integer.parseInt(input);
+                this.instructions.add(instruction);
                 lineCount++;
             } catch (NumberFormatException e) {
                 System.out.println("You can only enter integers, or the word 'GO'");
