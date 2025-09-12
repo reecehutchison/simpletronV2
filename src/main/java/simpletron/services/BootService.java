@@ -10,41 +10,39 @@ public class BootService {
         TerminalBoot
     }
 
-    public List<Integer> instructions = new ArrayList<>();
+    public List<Integer> instructions;
 
     public BootService() {}
 
-    public void boot() {
+    public List<Integer> boot() {
         this.printBootMessage();
         BootType bootType = BootType.values()[readBootType()];
 
-        switch (bootType) {  // this services will return a list<integer> which will be the instructions
+        switch (bootType) {
             case FileBoot:
-                // file service
-                // update instruction list
+                FileService fs = new FileService();
+                this.instructions = fs.executeService();
                 break;
+
             case TerminalBoot:
-                // terminal service
-                // update instruction list
+                KeyboardService kbs = new KeyboardService();
+                this.instructions = kbs.executeService();
                 break;
+
             default:
                 throw new RuntimeException("Boot type now supported");
         }
+
+        return this.instructions;
     }
-
-//    public int[] getInstructions() {
-//
-//    }
-
 
     private void printBootMessage() {
         String bootMessage = """
                 *** Welcome to Simpletron V2! ***
                 ***
-                Do you have a file that contains your SML program (Y/N) ? 
-                """;
+                Do you have a file that contains your SML program (Y/N) ?\s""";  // Note: \s is a space (escape char)
 
-        System.out.println(bootMessage);
+        System.out.print(bootMessage);
     }
 
     private int readBootType() throws RuntimeException {

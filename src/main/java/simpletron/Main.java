@@ -1,6 +1,7 @@
 package simpletron;
 
 import simpletron.core.Simpletron;
+import simpletron.services.BootService;
 import simpletron.services.FileService;
 import simpletron.services.KeyboardService;
 
@@ -12,15 +13,14 @@ public class Main {
 
 
     public static void main(String[] args) {
-
         Simpletron simpletronV2 = new Simpletron();
+        BootService bs = new BootService();
 
-        FileService fs = new FileService();
-        List<Integer> list =  fs.executeService();
-
-        for (int e : list) {
-            System.out.println(e);
-        }
+        List<Integer> list = bs.boot();
+        // simpletron load instructions into memory
+        // simpletron run program (will execute instruction cycles, fetch -> decode -> execute)
+        // terminate simulation gracefully
+        // write program in simpletron machine language
 
     }
 }

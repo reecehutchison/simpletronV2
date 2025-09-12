@@ -5,6 +5,7 @@ package simpletron.core;
 // TODO: make sure to enumerate the switch statement
 // TODO: remeber to follow the von nueman architecture, fetch -> decode -> execute (cycle)
 // TODO: program run: will loop of instruction cycles (doing the fetch, decode, execute)
+// todo: go through each class and click . and make sure nothing is public that should not be!
 
 import simpletron.services.ScannerService;
 
