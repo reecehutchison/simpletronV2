@@ -1,6 +1,7 @@
 package simpletron.core;
 
 // TODO: setters and getters and make class fields private
+// TODO: MAKE EVERYTHING PRIVATE THAT SHOULD BE PRIVATE
 // TODO: make sure to enumerate the switch statement
 // TODO: remeber to follow the von nueman architecture, fetch -> decode -> execute (cycle)
 // TODO: program run: will loop of instruction cycles (doing the fetch, decode, execute)
@@ -262,9 +263,10 @@ public class Simpletron {
     }
 
     private void printPageNumber(int pageNumber) {
-        System.out.println("PAGE ## " + pageNumber + "\n"); // add page number
+        System.out.println("PAGE ## " + pageNumber + "\n");
     }
 
+    // TODO : refactor this into a function that prints each register
     private void printRegisters() {
         System.out.println("REGISTERS:\n");
 
@@ -275,7 +277,6 @@ public class Simpletron {
         System.out.print("InstructionCounter    ");
         this.printIntegerWithCorrectAmountOfDigits(this.instructionCounterRegister, 6);
         System.out.println();
-
 
         System.out.print("IndexRegister         ");
         this.printIntegerWithCorrectAmountOfDigits(this.indexRegister, 6);

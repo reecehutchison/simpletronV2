@@ -1,7 +1,9 @@
 package simpletron;
 
 import simpletron.core.Simpletron;
-import simpletron.services.BootService;
+import simpletron.services.KeyboardService;
+
+import java.util.List;
 
 public class Main {
 
@@ -11,15 +13,15 @@ public class Main {
 
         Simpletron simpletronV2 = new Simpletron();
 
+        KeyboardService kb = new KeyboardService();
 
+        List<Integer> instructions = kb.executeService();
+
+        System.out.println("------");
+        for (int e : instructions) {
+            System.out.println(e);
+        }
 
 
     }
 }
-
-/*
-Alright, so you need to make some packages and files and shit...
-make a couples dirs:
-- core: simpletron.java, operation codes...
-- services: all the extra functions need (like i/o, intro program, file reading...)
- */

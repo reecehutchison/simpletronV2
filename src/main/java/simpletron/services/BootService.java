@@ -18,7 +18,7 @@ public class BootService {
         this.printBootMessage();
         BootType bootType = BootType.values()[readBootType()];
 
-        switch (bootType) {
+        switch (bootType) {  // this services will return a list<integer> which will be the instructions
             case FileBoot:
                 // file service
                 // update instruction list
