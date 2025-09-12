@@ -3,12 +3,13 @@ package simpletron.core;
 // TODO: setters and getters and make class fields private
 // TODO: MAKE EVERYTHING PRIVATE THAT SHOULD BE PRIVATE
 // TODO: make sure to enumerate the switch statement
-// TODO: remeber to follow the von nueman architecture, fetch -> decode -> execute (cycle)
+// TODO: remember to follow the von nueman architecture, fetch -> decode -> execute (cycle)
 // TODO: program run: will loop of instruction cycles (doing the fetch, decode, execute)
 // todo: go through each class and click . and make sure nothing is public that should not be!
 
 import simpletron.services.ScannerService;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Simpletron {
@@ -26,8 +27,27 @@ public class Simpletron {
 
     public Simpletron() {}
 
-    // TODO: loadInstructions()
     // TODO: executeInstructions()
+
+    public void loadInstructionsIntoMemory(List<Integer> instructions) {
+        if (instructions.size() > 10000) {
+            throw new RuntimeException("Simpletron memory overflow error");
+        }
+
+        int locationInMemory = 0;
+
+        for (int instruction : instructions) {
+            if (!this.validateInstruction(instruction)) {
+                throw new RuntimeException("Simpletron instructions are invalid, encountered an instruction with more then 6 digits");
+            }
+
+            this.memory[locationInMemory++] = instruction;
+        }
+    }
+
+    private boolean validateInstruction(int instruction) {
+        return instruction < 1000000 && instruction > -1000000;
+    }
 
     // READ
     public void read(int operand) {

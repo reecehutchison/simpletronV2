@@ -16,8 +16,12 @@ public class Main {
         Simpletron simpletronV2 = new Simpletron();
         BootService bs = new BootService();
 
-        List<Integer> list = bs.boot();
-        // simpletron load instructions into memory
+        List<Integer> instructions = bs.boot();
+
+        simpletronV2.loadInstructionsIntoMemory(instructions);
+
+        simpletronV2.coreDump(0,0);
+
         // simpletron run program (will execute instruction cycles, fetch -> decode -> execute)
         // terminate simulation gracefully
         // write program in simpletron machine language
