@@ -1,11 +1,15 @@
 package simpletron.core;
 
 // TODO: setters and getters and make class fields private
+// TODO: make sure to enumerate the switch statement
 
+import java.util.Scanner;
 
 public class Simpletron {
     final int MEMORY_SIZE = 10000;
     final int PAGE_SIZE = 100;
+    final int WORD_SIZE = 6; // 6 digits (word size)
+    final int OPERAND_SIZE = 4;
 
     public int[] memory = new int[MEMORY_SIZE];
 
@@ -14,10 +18,66 @@ public class Simpletron {
     public int instructionRegister = 0;
     public int indexRegister = 0;
 
-    public Simpletron() {
+    Scanner scanner = new Scanner(System.in);
 
+    public Simpletron() {}
+
+    // TODO: loadInstructions()
+    // TODO: executeInstructions()
+
+    // READ
+    public void read(int operand) {
+        System.out.print("? ");
+        int word = scanner.nextInt();
+        this.validateRead(word);
+        this.memory[operand] = word;
     }
 
+    private void validateRead(int word) throws RuntimeException {
+        StringBuilder wordString = new StringBuilder(String.valueOf(word));
+
+        // removing negative sign which will turn 6 digit values into 7
+        if (word < 0) {
+            wordString.delete(0, 1);
+        }
+
+        if (wordString.length() > WORD_SIZE) {
+            throw new RuntimeException("Read value, word size, must be less then " + this.WORD_SIZE +  " digits");
+        }
+    }
+
+    // WRITE
+    public void write(int operand) {
+        this.printIntegerWithCorrectAmountOfDigits(this.memory[operand], 6);
+        System.out.println();
+    }
+
+    // LOAD
+    public void load(int operand) {
+        this.accumulatorRegister = this.memory[operand];
+    }
+
+    // LOADIM  --> this function is weird because it's not possible to load a full
+    //             word into the accumulator, only 4 digits max...
+    public void loadIm(int operand) {
+        validateLoadIm(operand);
+        this.accumulatorRegister = operand;
+    }
+
+    private void validateLoadIm(int operand) {
+        StringBuilder operandString = new StringBuilder(String.valueOf(operand));
+
+        // removing negative sign which will turn 6 digit values into 7
+        if (operand < 0) {
+            operandString.delete(0, 1);
+        }
+
+        if (operandString.length() > OPERAND_SIZE) {
+            throw new RuntimeException("Read value, operand size, must be less then " + this.OPERAND_SIZE +  " digits");
+        }
+    }
+
+    // TODO : make this private
     public void coreDump(int lowPageRange, int highPageRange) {
         this.validatePageRanges(lowPageRange, highPageRange);
 
@@ -45,7 +105,7 @@ public class Simpletron {
         }
     }
 
-    void printMemoryRow(int currentPageLocation) {
+    private void printMemoryRow(int currentPageLocation) {
         final int ROW_SIZE = 10;
 
         for (int memoryIndex = currentPageLocation; memoryIndex < currentPageLocation + ROW_SIZE; memoryIndex++) {
