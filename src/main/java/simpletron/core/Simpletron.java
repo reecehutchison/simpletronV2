@@ -99,7 +99,7 @@ public class Simpletron {
     }
 
     private boolean executeInstruction(int operationCode, int operand) {
-        OperationCodes opCode = OperationCodes.values()[operationCode];
+        OperationCodes opCode = OperationCodes.values()[Math.abs(operationCode)];
 
         switch (opCode) {
             case READ:
@@ -371,7 +371,7 @@ public class Simpletron {
 
     // BRANCH
     public void branch(int operand) {
-        this.instructionCounterRegister = operand;
+        this.instructionCounterRegister = operand - 1;
     }
 
     // BRANCHNEG
