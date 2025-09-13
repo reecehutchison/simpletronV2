@@ -7,6 +7,7 @@ package simpletron.core;
 // TODO: program run: will loop of instruction cycles (doing the fetch, decode, execute)
 // todo: go through each class and click . and make sure nothing is public that should not be!
 // TODO: load a halt in at the end of loading into program...
+// TODO: finish the readme
 
 import simpletron.services.ScannerService;
 
