@@ -196,7 +196,7 @@ public class Simpletron {
                 return false;
 
             default:
-                throw new RuntimeException("How did we get here?");
+                throw new RuntimeException("Wrong operation code: " + operationCode);
         }
 
 

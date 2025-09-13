@@ -2,8 +2,6 @@ package simpletron;
 
 import simpletron.core.Simpletron;
 import simpletron.services.BootService;
-import simpletron.services.FileService;
-import simpletron.services.KeyboardService;
 
 import java.util.List;
 
