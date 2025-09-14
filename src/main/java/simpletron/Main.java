@@ -18,5 +18,3 @@ public class Main {
         System.out.println("\n*** Thank you for using the SimpletronV2 ***");
     }
 }
-
-// TODO: README
