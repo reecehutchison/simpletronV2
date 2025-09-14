@@ -79,6 +79,7 @@ public class Simpletron {
 
             // fetch
             int currentInstruction = fetchInstruction();
+            this.instructionRegister = currentInstruction;
 
             // decode
             int operationCode = decodeOperationCode(currentInstruction);
@@ -372,20 +373,20 @@ public class Simpletron {
 
     // BRANCH
     public void branch(int operand) {
-        this.instructionCounterRegister = operand - 1;
+        this.instructionCounterRegister = operand - 2;
     }
 
     // BRANCHNEG
     public void branchNeg(int operand) {
         if (this.accumulatorRegister < 0) {
-            this.instructionCounterRegister = operand;
+            this.instructionCounterRegister = operand - 2;
         }
     }
 
     // BRANCHZERO
     public void branchZero(int operand) {
         if (this.accumulatorRegister == 0) {
-            this.instructionCounterRegister = operand;
+            this.instructionCounterRegister = operand - 2;
         }
     }
 

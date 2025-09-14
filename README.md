@@ -20,8 +20,12 @@ How to compile and run the java code:
 Description of the test programs:  
 ...
 
-Description of the two assigned problems:  
-...
+Description of the two assigned problems:
+
+**Problem 2: Dynamic Min/Max Array Algorithm**
+
+```
+```
 
 Input file format:  
 ...
