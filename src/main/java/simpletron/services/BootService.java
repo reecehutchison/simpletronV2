@@ -1,6 +1,5 @@
 package simpletron.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -33,7 +32,7 @@ public class BootService {
                 throw new RuntimeException("Boot type now supported");
         }
 
-        System.out.println(); // add spacing so it's pretttttttttttttty
+        System.out.println(); // add spacing so it's pretty
         return this.instructions;
     }
 

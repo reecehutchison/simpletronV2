@@ -1,14 +1,5 @@
 package simpletron.core;
 
-// TODO: setters and getters and make class fields private
-// TODO: MAKE EVERYTHING PRIVATE THAT SHOULD BE PRIVATE
-// TODO: make sure to enumerate the switch statement
-// TODO: remember to follow the von nueman architecture, fetch -> decode -> execute (cycle)
-// TODO: program run: will loop of instruction cycles (doing the fetch, decode, execute)
-// todo: go through each class and click . and make sure nothing is public that should not be!
-// TODO: load a halt in at the end of loading into program...
-// TODO: finish the readme
-
 import simpletron.services.ScannerService;
 
 import java.util.List;
@@ -57,17 +48,15 @@ public class Simpletron {
         HALT
     }
 
-    final int MEMORY_SIZE = 10000;
-    final int PAGE_SIZE = 100;
-    final int WORD_SIZE = 6; // 6 digits (word size)
-    final int OPERAND_SIZE = 4;
+    private final int MEMORY_SIZE = 10000;
+    private final int PAGE_SIZE = 100;
 
-    public int[] memory = new int[MEMORY_SIZE];
+    private final int[] memory = new int[MEMORY_SIZE];
 
-    public int accumulatorRegister = 0;
-    public int instructionCounterRegister = 0;
-    public int instructionRegister = 0;
-    public int indexRegister = 0;
+    private int accumulatorRegister = 0;
+    private int instructionCounterRegister = 0;
+    private int instructionRegister = 0;
+    private int indexRegister = 0;
 
     public Simpletron() {}
 
@@ -249,7 +238,7 @@ public class Simpletron {
     }
 
     // READ
-    public void read(int operand) {
+    private void read(int operand) {
         Scanner scanner = ScannerService.getScanner();
         System.out.print("? ");
         int word = scanner.nextInt();
@@ -265,25 +254,27 @@ public class Simpletron {
             wordString.delete(0, 1);
         }
 
+        // 6 digits (word size)
+        int WORD_SIZE = 6;
         if (wordString.length() > WORD_SIZE) {
-            throw new RuntimeException("Read value, word size, must be less then " + this.WORD_SIZE +  " digits");
+            throw new RuntimeException("Read value, word size, must be less then " + WORD_SIZE +  " digits");
         }
     }
 
     // WRITE
-    public void write(int operand) {
+    private void write(int operand) {
         this.printIntegerWithCorrectAmountOfDigits(this.memory[operand], 6);
         System.out.println();
     }
 
     // LOAD
-    public void load(int operand) {
+    private void load(int operand) {
         this.accumulatorRegister = this.memory[operand];
     }
 
     // LOADIM  --> this function is weird because it's not possible to load a full
     //             word into the accumulator, only 4 digits max...
-    public void loadIm(int operand) {
+    private void loadIm(int operand) {
         validateLoadIm(operand);
         this.accumulatorRegister = operand;
     }
@@ -296,117 +287,116 @@ public class Simpletron {
             operandString.delete(0, 1);
         }
 
+        int OPERAND_SIZE = 4;
         if (operandString.length() > OPERAND_SIZE) {
-            throw new RuntimeException("Read value, operand size, must be less then " + this.OPERAND_SIZE +  " digits");
+            throw new RuntimeException("Read value, operand size, must be less then " + OPERAND_SIZE +  " digits");
         }
     }
 
     // LOADX
-    public void loadX(int operand) {
+    private void loadX(int operand) {
         this.indexRegister = this.memory[operand];
     }
 
     // LOADIDX
-    public void loadIdx() {
+    private void loadIdx() {
         this.accumulatorRegister = this.memory[this.indexRegister];
     }
 
     // STORE
-    public void store(int operand) {
+    private void store(int operand) {
         this.memory[operand] = this.accumulatorRegister;
     }
 
     // STOREIDX
-    public void storeIdx() {
+    private void storeIdx() {
         this.memory[this.indexRegister] = this.accumulatorRegister;
     }
 
     // ADD
-    public void add(int operand) {
+    private void add(int operand) {
         this.accumulatorRegister += this.memory[operand];
     }
 
     // ADDX
-    public void addX() {
+    private void addX() {
         this.accumulatorRegister += this.memory[this.indexRegister];
     }
 
     // SUBTRACT
-    public void subtract(int operand) {
+    private void subtract(int operand) {
         this.accumulatorRegister -= this.memory[operand];
     }
 
     // SUBTRACTX
-    public void subtractX() {
+    private void subtractX() {
         this.accumulatorRegister -= this.memory[this.indexRegister];
     }
 
     // DIVIDE
-    public void divide(int operand) {
+    private void divide(int operand) {
         this.accumulatorRegister /= this.memory[operand];
     }
 
     // DIVIDEX
-    public void divideX() {
+    private void divideX() {
         this.accumulatorRegister /= this.memory[this.indexRegister];
     }
 
     // MULTIPLY
-    public void multiply(int operand) {
+    private void multiply(int operand) {
         this.accumulatorRegister *= this.memory[operand];
     }
 
     // MULTIPLYX
-    public void multiplyX() {
+    private void multiplyX() {
         this.accumulatorRegister *= this.memory[this.indexRegister];
     }
 
     // INC
-    public void inc() {
+    private void inc() {
         this.indexRegister++;
     }
 
     // DEC
-    public void dec() {
+    private void dec() {
         this.indexRegister--;
     }
 
     // BRANCH
-    public void branch(int operand) {
+    private void branch(int operand) {
         this.instructionCounterRegister = operand - 2;
     }
 
     // BRANCHNEG
-    public void branchNeg(int operand) {
+    private void branchNeg(int operand) {
         if (this.accumulatorRegister < 0) {
             this.instructionCounterRegister = operand - 2;
         }
     }
 
     // BRANCHZERO
-    public void branchZero(int operand) {
+    private void branchZero(int operand) {
         if (this.accumulatorRegister == 0) {
             this.instructionCounterRegister = operand - 2;
         }
     }
 
     // SWAP
-    public void swap() {
+    private void swap() {
         int tmp = this.accumulatorRegister;
         this.accumulatorRegister = indexRegister;
         this.indexRegister = tmp;
     }
 
     // HALT
-    public void halt(int operand) {
+    private void halt(int operand) {
         int lowRange = operand / 100;
         int highRange = operand % 100;
         coreDump(lowRange, highRange);
     }
 
-
-    // TODO : make this private
-    public void coreDump(int lowPageRange, int highPageRange) {
+    private void coreDump(int lowPageRange, int highPageRange) {
         this.validatePageRanges(lowPageRange, highPageRange);
 
         for (int currentPage = lowPageRange; currentPage <= highPageRange; currentPage++) {
@@ -465,7 +455,7 @@ public class Simpletron {
             correctNumber.insert(0, "-");
         }
 
-        System.out.print(correctNumber.toString());
+        System.out.print(correctNumber);
     }
 
     private void validatePageRanges(int lowPageRange, int highPageRange) throws IllegalArgumentException {

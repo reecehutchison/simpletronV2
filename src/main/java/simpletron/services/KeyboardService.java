@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class KeyboardService {
-    private List<Integer> instructions = new ArrayList<>();
+    final private List<Integer> instructions = new ArrayList<>();
 
     public KeyboardService() {}
 
@@ -41,7 +41,7 @@ public class KeyboardService {
         while (formatedLineNumber.length() < 4) {
             formatedLineNumber.insert(0, "0");
         }
-        System.out.print(formatedLineNumber.toString());
+        System.out.print(formatedLineNumber);
     }
 
     private void printServiceMessage() {
