@@ -90,6 +90,12 @@ public class Simpletron {
     }
 
     private boolean executeInstruction(int operationCode, int operand) {
+        if (operationCode > 45) {
+            System.out.println("Wrong operation code: " + operationCode + "\n");
+            this.coreDump(0, 0);
+            System.exit(0);
+        }
+
         OperationCodes opCode = OperationCodes.values()[Math.abs(operationCode)];
 
         switch (opCode) {
@@ -187,11 +193,22 @@ public class Simpletron {
                 return false;
 
             default:
-                throw new RuntimeException("Wrong operation code: " + operationCode);
+                System.out.println("Wrong operation code: " + operationCode + "\n");
+                this.coreDump(0, 0);
+                System.exit(0);
         }
 
+        validateAccumulatorRegister();
 
         return true;
+    }
+
+    private void validateAccumulatorRegister() {
+        if (this.accumulatorRegister > 999999 || this.accumulatorRegister < -999999) {
+            System.out.println("Accumulator overflow\n");
+            this.coreDump(0, 0);
+            System.exit(0);
+        }
     }
 
     private int decodeOperationCode(int instruction) {
@@ -335,6 +352,12 @@ public class Simpletron {
 
     // DIVIDE
     private void divide(int operand) {
+        if (operand == 0) {
+            System.out.println("Divide by zero undefined\n");
+            this.coreDump(0, 0);
+            System.exit(0);
+        }
+
         this.accumulatorRegister /= this.memory[operand];
     }
 
