@@ -231,9 +231,9 @@ public class Simpletron {
         int locationInMemory = 0;
 
         for (int instruction : instructions) {
-            if (!this.validateInstruction(instruction)) {
-                throw new RuntimeException("Simpletron instructions are invalid, encountered an instruction with more or less then 6 digits");
-            }
+//            if (!this.validateInstruction(instruction)) {
+//                throw new RuntimeException("Simpletron instructions are invalid, encountered an instruction with more or less then 6 digits");
+//            }
 
             this.memory[locationInMemory++] = instruction;
         }
@@ -386,22 +386,22 @@ public class Simpletron {
         this.indexRegister--;
     }
 
-    // BRANCH
+    // BRANCH                                            // they were all - 2
     private void branch(int operand) {
-        this.instructionCounterRegister = operand - 2;
+        this.instructionCounterRegister = operand - 1;
     }
 
     // BRANCHNEG
     private void branchNeg(int operand) {
         if (this.accumulatorRegister < 0) {
-            this.instructionCounterRegister = operand - 2;
+            this.instructionCounterRegister = operand - 1;
         }
     }
 
     // BRANCHZERO
     private void branchZero(int operand) {
         if (this.accumulatorRegister == 0) {
-            this.instructionCounterRegister = operand - 2;
+            this.instructionCounterRegister = operand - 1;
         }
     }
 
