@@ -232,7 +232,7 @@ public class Simpletron {
 
         for (int instruction : instructions) {
 //            if (!this.validateInstruction(instruction)) {
-//                throw new RuntimeException("Simpletron instructions are invalid, encountered an instruction with more or less then 6 digits");
+//                throw new RuntimeException("Simpletron instructions are invalid, encountered an instruction with more or less than 6 digits");
 //            }
 
             this.memory[locationInMemory++] = instruction;
@@ -244,15 +244,15 @@ public class Simpletron {
         }
     }
 
-    private boolean validateInstruction(int instruction) {
-        StringBuilder stringInstruction = new StringBuilder(String.valueOf(instruction));
-
-        if (instruction < 0) {
-            stringInstruction.delete(0, 1);
-        }
-
-        return stringInstruction.length() == 6 || instruction == 0;
-    }
+//    private boolean validateInstruction(int instruction) {
+//        StringBuilder stringInstruction = new StringBuilder(String.valueOf(instruction));
+//
+//        if (instruction < 0) {
+//            stringInstruction.delete(0, 1);
+//        }
+//
+//        return stringInstruction.length() == 6 || instruction == 0;
+//    }
 
     // READ
     private void read(int operand) {
